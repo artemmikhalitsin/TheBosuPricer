@@ -2,14 +2,14 @@
     <div id="search">
       <Row class="searchbar" type="flex" justify="center">
         <Col span="20">
-          <Input size="large" v-model="search" placeholder="Search">
-               <Button slot="append" icon="ios-search"></Button>
+          <Input size="large" v-model="search" icon="ios-search"
+            placeholder="Search" @on-enter="submitSearch">
           </Input>
         </Col>
       </Row>
       <Row type="flex" justify="center">
         <Col span="20">
-          <search-options/>
+          <search-options @change="updateOptions"/>
         </Col>
       </Row>
       <Row type="flex" justify="center">
@@ -30,8 +30,10 @@ export default {
     SearchResults
   },
   methods: {
-    updateSearchOptions: function (newOptions) {
-      this.options = newOptions
+    updateOptions (newVal) {
+      this.options = newVal
+    },
+    submitSearch () {
     }
   },
   data () {

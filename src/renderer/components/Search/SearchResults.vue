@@ -1,64 +1,40 @@
 <template lang="html">
-  <div id="search results">
-      <Button v-on:click="setColumns">Click</Button>
-      <Table :columns="columns" :data="data" :loading="loading"></Table>
+  <div id="searchresults">
+    <search-item v-for="item in searchResults" :data="item"/>
   </div>
 </template>
 
 <script>
+import SearchItem from './SearchResults/SearchItem'
 export default {
+  components: {
+    SearchItem
+  },
   data () {
     return {
-      storelist: [],
-      loading: false,
-      columns: [],
-      data: []
-    }
-  },
-  methods: {
-    setColumns: function () {
-      this.columns = [
+      searchResults: [
         {
-          title: ' ',
-          key: 'img',
-          width: 50
-        },
-        {
-          title: 'Card',
-          key: 'name',
-          render: (h, params) => {
-            return h('div', [
-              h('strong', {
-                style: {
-                  'font-size': '1.2em'
-                }
-              }, params.row.name),
-              h('br'),
-              h('p', params.row.set)
-            ])
+          name: 'Goblin Guide',
+          set: 'Zendikar',
+          img: '',
+          stock: {
+            'CFB': 1,
+            'SCG': 1
+          },
+          sell: {
+            'CFB': 9.99,
+            'SCG': 10.99
+          },
+          buy: {
+            'CFB': 2.00,
+            'SCG': 1.00
           }
         }
-      ]
-
-      for (var i = 0, len = this.storelist.length; i < len; i++) {
-        let store = this.storelist[i]
-        this.columns.push({
-          title: store,
-          key: store,
-          width: 50,
-          render: this.renderPriceQty(store)
-        })
-      }
-    },
-    renderPriceQty: function (storename) {
-      return function (h, params) {
-        return h('div', [
-          h('p', params.row.stores[storename].NMPrice),
-          h('p', params.row.stores[storename].quantity + ' in stock')
-        ])
-      }
+      ],
+      stores: ['CFB', 'SCG']
     }
-  }
+  },
+  methods: {}
 }
 </script>
 
