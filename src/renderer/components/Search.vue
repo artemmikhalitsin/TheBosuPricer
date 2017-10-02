@@ -23,6 +23,10 @@
 <script>
 import SearchOptions from './Search/SearchOptions'
 import SearchResults from './Search/SearchResults'
+import querystring from 'querystring'
+import request from 'request-promise'
+import cheerio from 'cheerio'
+import '../../js/cfb.js'
 
 export default {
   components: {
@@ -34,11 +38,28 @@ export default {
       this.options = newVal
     },
     submitSearch () {
+      console.log('submitted')
+      this.searchCFB('goblin guide')
+    },
+    searchCFB (cardname) {
+      function extractCardData (html) {
+        let $ = cheerio.load(html)
+        $('body')
+      }
+
+      let query = querystring.stringify({
+        query: 'goblin guide'
+      })
+      return new Promise((resolve, reject) => {
+        request('http://store.channelfireball.com/products/search?' + query)
+          .then(extractCardData)
+      })
     }
   },
   data () {
     return {
       search: '',
+      searchResult: '',
       options: []
     }
   }
