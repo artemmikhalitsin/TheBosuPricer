@@ -1,6 +1,6 @@
 # bosupricer
 
-> An electron-vue project
+> Application to look up card prices across multiple major retailers built for a co-worker. Built using electron-vue.
 
 #### Build Setup
 
