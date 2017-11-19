@@ -10,27 +10,14 @@ export default {
   components: {
     SearchItem
   },
+  props: {
+    searchResults: {
+      type: Array,
+      default: []
+    }
+  },
   data () {
     return {
-      searchResults: [
-        {
-          name: 'Goblin Guide',
-          set: 'Zendikar',
-          img: '',
-          stock: {
-            'CFB': 1,
-            'SCG': 1
-          },
-          sell: {
-            'CFB': 9.99,
-            'SCG': 10.99
-          },
-          buy: {
-            'CFB': 2.00,
-            'SCG': 1.00
-          }
-        }
-      ],
       stores: ['CFB', 'SCG']
     }
   },

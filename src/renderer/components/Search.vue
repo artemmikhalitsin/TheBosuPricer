@@ -3,18 +3,20 @@
       <Row class="searchbar" type="flex" justify="center">
         <Col span="20">
           <Input size="large" v-model="search" icon="ios-search"
-            placeholder="Search" @on-enter="submitSearch">
+            placeholder="Search" @on-enter="submitSearch"
+            @on-click="submitSearch">
           </Input>
         </Col>
       </Row>
       <Row type="flex" justify="center">
         <Col span="20">
           <search-options @change="updateOptions"/>
+          {{ cfb }}
         </Col>
       </Row>
       <Row type="flex" justify="center">
         <Col span="20">
-          <search-results/>
+          <search-results :search-results="mock"/>
         </Col>
       </Row>
     </div>
@@ -23,10 +25,7 @@
 <script>
 import SearchOptions from './Search/SearchOptions'
 import SearchResults from './Search/SearchResults'
-import querystring from 'querystring'
-import request from 'request-promise'
-import cheerio from 'cheerio'
-import '../../js/cfb.js'
+import cfbUtils from '../../js/cfb.js'
 
 export default {
   components: {
@@ -38,29 +37,41 @@ export default {
       this.options = newVal
     },
     submitSearch () {
-      console.log('submitted')
-      this.searchCFB('goblin guide')
+      this.searchCFB(this.search)
     },
     searchCFB (cardname) {
-      function extractCardData (html) {
-        let $ = cheerio.load(html)
-        $('body')
-      }
-
-      let query = querystring.stringify({
-        query: 'goblin guide'
-      })
-      return new Promise((resolve, reject) => {
-        request('http://store.channelfireball.com/products/search?' + query)
-          .then(extractCardData)
-      })
+      console.log('executing search')
+      cfbUtils.search(cardname)
+        .then(
+          (result) => { this.cfb = result }
+        )
     }
   },
   data () {
     return {
       search: '',
       searchResult: '',
-      options: []
+      options: [],
+      cfb: 'cfb placeholder',
+      mock: [
+        {
+          name: 'Goblin Guide',
+          set: 'Zendikar',
+          img: '',
+          stock: {
+            'CFB': 1,
+            'SCG': 1
+          },
+          sell: {
+            'CFB': 9.99,
+            'SCG': 10.99
+          },
+          buy: {
+            'CFB': 2.00,
+            'SCG': 1.00
+          }
+        }
+      ]
     }
   }
 }
