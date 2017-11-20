@@ -21,6 +21,7 @@ function search (cardName) {
     return cards
   }
 
+  // Given a card row, extracts its data into an object
   function extractCardData (row) {
     let card = {}
     // Title contains info about name and set
@@ -36,8 +37,7 @@ function search (cardName) {
       .includes(cardName)) {
       // Extract price, and stock
       let id = row.attr('id')
-      // Find the NM price using the id
-      card.id = id
+      // Find the NM price and qty using the id
       card.price = getNMPrice(id)
       card.stock = getStock(id)
       return card
@@ -45,6 +45,7 @@ function search (cardName) {
     return null
   }
 
+  // Retrieves the NM price of the card
   function getNMPrice (id) {
     let gridItem = $('.global-grid-container').find(`#${id}`)
     let priceElement = gridItem.children('.grid-item-price')
@@ -58,6 +59,7 @@ function search (cardName) {
     return price
   }
 
+  // Counts total stock of a card
   function getStock (id) {
     let rowItem = $('.global-list-container').find(`#${id}`)
     let totalStock = 0
@@ -78,6 +80,9 @@ function search (cardName) {
   })
 
   return new Promise((resolve, reject) => {
+    if (cardName === '') {
+      reject(new Error('Card name cannot be empty'))
+    }
     request('http://store.channelfireball.com/products/search?' + query)
       .then(getPageData)
       .then((result) => { resolve(result) })

@@ -11,7 +11,8 @@
       <Row type="flex" justify="center">
         <Col span="20">
           <search-options @change="updateOptions"/>
-          {{ cfb }}
+          <p>{{ cfb }}</p>
+          <p>{{ cardkingdom }}</p>
         </Col>
       </Row>
       <Row type="flex" justify="center">
@@ -26,6 +27,7 @@
 import SearchOptions from './Search/SearchOptions'
 import SearchResults from './Search/SearchResults'
 import cfbUtils from '../../js/cfb.js'
+import ckUtils from '../../js/cardkingdom.js'
 
 export default {
   components: {
@@ -37,14 +39,15 @@ export default {
       this.options = newVal
     },
     submitSearch () {
-      this.searchCFB(this.search)
+      cfbUtils.search(this.search)
+        .then((data) => { this.cfb = data })
+      ckUtils.search(this.search)
+        .then((data) => { this.cardkingdom = data })
     },
     searchCFB (cardname) {
       console.log('executing search')
       cfbUtils.search(cardname)
-        .then(
-          (result) => { this.cfb = result }
-        )
+      ckUtils.search(cardname)
     }
   },
   data () {
@@ -53,6 +56,7 @@ export default {
       searchResult: '',
       options: [],
       cfb: 'cfb placeholder',
+      cardkingdom: 'cardkingdom placeholder',
       mock: [
         {
           name: 'Goblin Guide',
